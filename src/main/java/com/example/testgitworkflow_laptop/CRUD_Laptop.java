@@ -1,9 +1,6 @@
 package com.example.testgitworkflow_laptop;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class CRUD_Laptop {
     Connection connection = DatabaseConnection.getConnection();
@@ -40,5 +37,20 @@ public class CRUD_Laptop {
         statement.setInt(1, ID);
         statement.executeUpdate();
         statement.close();
+    }
+    //Tìm kiếm sản phẩm
+    public void searchLaptop(String query, String searchName) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, "%"+searchName+"%");
+        ResultSet rs = statement.executeQuery();
+        while (rs.next()) {
+            String name = rs.getString("name");
+            String ram = rs.getString("RAM");
+            String ssd = rs.getString("SSD");
+            String chipset = rs.getString("chipset");
+            Double price = rs.getDouble("price");
+            Boolean stock = rs.getBoolean("stock");
+            System.out.println("Danh sách laptop tìm kiếm : "+ name + " , " + ram + " , " + ssd + " , " + chipset + " , " + price + " , " + stock);
+        }
     }
 }
